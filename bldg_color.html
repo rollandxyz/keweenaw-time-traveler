@@ -621,12 +621,8 @@ require([
 									if (featEditResult){
 										if (featEditResult["success"]){
 											dojo.byId("updatedfieldInfo").innerHTML = "(objectid=" + lastOBJECTID + ") " + edit_field + "=" + edit_field_value;
-											
-											// completed one more in this session
-											//completedCount = completedCount + 1;
-											
-											// completion percentage
-											//dom.byId("percentInfo").innerHTML = percentage();
+																																	
+											// completion percentage											
 											refreshCompletionPercentage_Promises();
 										} else {
 											dojo.byId("updatedfieldInfo").innerHTML = "applyEdits: (objectid=" + lastOBJECTID + ") with " + featEditResult["error"];
@@ -733,8 +729,7 @@ require([
 						//console.log(featureAttributes[featureLayer.objectIdField]);						
 						fidItems.push(featureAttributes[featureLayer.objectIdField]); 
 					} 
-					if (resultCount>0){
-						dom.byId("debugInfo").innerHTML = resultCount;						
+					if (resultCount>0){												
 						// start edit
 						execute (null);
 						setupColorTools(); 
@@ -742,10 +737,11 @@ require([
 					else{
 						// what do we do with it 
 						alert("all done");
+						dom.byId("debugInfo").innerHTML = "Every feature has a value in BldgColorP.";
 					}
 				}, 
 				function(errs){
-					dom.byId("debugInfo").innerHTML = "getAllFIDs:" + errs;
+					dom.byId("debugInfo").innerHTML = "Error:getAllFIDs() " + errs;
 			});  	
 		}
 		
@@ -1307,7 +1303,7 @@ require([
 		</div>	
 		
 		<!-- building text -->
-		<div id="textDiv" style="background-color:white;height:200px;>
+		<div id="textDiv" style="background-color:white;height:200px;">
 			<p style="color:black">BldgText is coming...</p>
 		</div>
 	
