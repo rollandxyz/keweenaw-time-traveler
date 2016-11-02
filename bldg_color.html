@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html dir="ltr">
+
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />   
+   <title>Building Color/material</title>   
+   <link rel="stylesheet" href="https://js.arcgis.com/3.18/dijit/themes/claro/claro.css">
+	<link rel="stylesheet" href="https://js.arcgis.com/3.18/dijit/themes/tundra/tundra.css">	
+   <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
+   	
+   <script>  var dojoConfig = {   parseOnLoad: true  };   </script>
+   <script src="https://js.arcgis.com/3.18/"></script> 
+	 	 
+	<link rel="stylesheet" href="css/bldgcolortheme.css">	
+	<script src="js/datafile.js"></script>
+	<script src="js/msgInfo.js"></script>
+	<style>
+      html,
+      body,
+      #map,
+      .map.container {
+         padding: 0;
+         margin: 0;
+         height: 100%;
+         width: 100%;
+      } 
+		
+      #userInteractCtlDiv {
+         top: 40px;
+         color: white;
+         height: auto;
+         font-family: arial;
+         font-weight: bold;
+         left: 9px;
+         margin:5px 5px 5px 0px;  
+         padding: 10px;
+         position: absolute;
+         width: auto;
+         z-index: 40;
+         border: solid 0px #003300;
+         border-radius: 0px;
+         background-color: black;			 
+      } 
+
+		.roundCornerDiv{			
+			border-radius: 25px;
+			border: 0px solid #73AD21;			
+			width:80px;	
+			height:35px;
+			cursor: pointer;	
+			vertical-align: middle;	
+			display: table-cell;		
+		}
+
+		.roundCornerDiv2{			
+			border-radius: 25px;
+			border: 0px solid #73AD21;			
+			width:80px;	
+			height:35px;
+			cursor: pointer;	
+			vertical-align: middle;				
+		}
+      .cchColorInput"{
+		  margin-top:10px;
+		  }		
+		input[type="checkbox"]:focus{
+        outline:0;
+		}
+	  
+	 #search {
+         display: block;
+         position: absolute;
+         z-index: 2;
+         right:200px;
+			top: 30px;
+         
+      }
+	
+	</style>
+	<script> 	
+		require(["dojo/parser", "dijit/layout/ContentPane", "dijit/layout/BorderContainer", 
+					"dijit/layout/TabContainer","dijit/form/ComboButton",			
+                "dijit/MenuBar","dijit/form/Button","dijit/DropDownMenu",
+                "dijit/MenuBarItem","dojox/layout/FloatingPane",
+                "dijit/PopupMenuBarItem","dijit/TooltipDialog",
+					"dijit/Menu","dijit/MenuItem","dojo/domReady!" ]);
+	</script>	
+	<link rel="stylesheet" type="text/css" href="https://js.arcgis.com/3.8/js/dojo/dojox/layout/resources/ResizeHandle.css">	 
+	<link rel="stylesheet" type="text/css" href="https://js.arcgis.com/3.8/js/dojo/dojox/layout/resources/FloatingPane.css">
+	<style>
+		html, body {
+			 width: 100%;
+			 height: 100%;
+			 margin: 0;			 
+			 overflow:hidden; 
+			background: rgba(0, 0, 0, 0.9);;
+			color: #666666;
+			font-family: 'Lato', sans-serif;
+			font-size: 16px;
+			font-weight: normal;
+			line-height: 24px;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		}
+
+		#mainContainer {
+			 width: 100%;
+			 height: 100%; 
+		}
+		
+		.logo{
+			height:30px;
+			margin-top:7px;
+		}
+		
+		.claro .dijitMenuBar {
+			 background-image: none;
+			 background: rgba(0, 0, 0, 0.9);;
+			 color: #666666;
+		}
+		.dijitMenuBar td{
+			 background-image: none;
+			 background: rgba(0, 0, 0, 0.9);;
+			 color: #666666;
+		}
+		.claro .dijitComboButtonNode {
+			background-image: none;
+			background:rgba(0, 0, 0, 0.9);;
+			color: #666666;
+		}
+		.claro .dijitMenuItemNode {
+			background-image: none;
+			background: rgba(0, 0, 0, 0.9);;
+			color: #666666;
+		}
+		 
+.claro .dijitComboBox input.dijitReset{
+	padding:5px 0px 5px 5px;
+	width:80% !important;
+}
+
+.claro .dijitComboBox .dijitArrowButtonInner{
+	line-height:65px;
+	background-image: none;
+			background: rgba(0, 0, 0, 0.9);
+			color: #666666;
+}
+
+.claro .ComboButton{
+	line-height:65px;
+	background-image: none;
+	background: #222121;
+	color: #666666;
+}
+ 
+ .myDropDownButton {
+		background-image: none;
+      background-color: black;
+      border: 0px;
+		color: #666666;
+} 
+.claro .dijitArrowButtonInner {
+    width: 15px;
+    height: 15px;
+    margin: 0 auto;
+    background-image: none; !url(form/images/buttonArrows.png);
+    background-repeat: no-repeat;
+    background-position: -51px 53%;
+}
+.claro .dijitButtonNode {
+    border: 0px solid gray;
+    margin: 0;
+    line-height: normal;
+    vertical-align: middle;
+    #vertical-align: auto;
+    text-align: center;
+    white-space: nowrap;
+	 color:white;
+	 background-image: none;
+}
+
+.claro .esriBasemapGallerySelectedNode .esriBasemapGalleryThumbnail{ 
+  border-color:red !important; 
+}
+
+ 
+.claro .dijitTitlePaneTitle {	
+	background: black !important;	
+}
+.claro .dijitTitlePane .dijitArrowNode {
+  background-image: none;
+}
+ 
+
+        #debugFloatingPane {
+            -moz-border-radius: 6px;
+            -webkit-border-radius: 6px;
+            position: absolute;
+            bottom: 75px;
+            right: 10px;
+            width: 140px;
+            height: 350px;
+            z-index: 90;
+        }
+		  
+        #userInputFloatingPane {
+            -moz-border-radius: 6px;
+            -webkit-border-radius: 6px;
+            position: absolute;
+            top: 75px;
+            left: 10px;
+            width: 140px;
+            height: 350px;
+            z-index: 90;
+        }
+		  #userInputFloatingPane .dojoxFloatingPaneTitle {
+				background: black; 
+			}
+        .dojoxFloatingPaneContent {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 8pt;
+            font-weight: bold;
+            overflow: auto;
+        }
+
+        .dojoxFloatingPaneTitle, .reportTitlePane {
+            color: white;
+            background-color: #76a2c5;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12pt;
+            font-weight: bold;
+            overflow: auto;
+        }		
+	</style>
+	
+	
+	
+<script> 		  
+require([
+	"dojo/dom", "dojo/on", "dijit/form/Button","dijit/form/RadioButton","dijit/form/ComboBox","dojo/store/Memory",
+	'dojo/dom-style' ,'dijit/registry' ,"dojo/promise/all","dojo/_base/array","dojox/widget/Standby",
+	"esri/tasks/query", "esri/tasks/QueryTask", "esri/tasks/StatisticDefinition",
+	"esri/symbols/SimpleFillSymbol",	"esri/symbols/SimpleLineSymbol",
+	"esri/Color","esri/graphicsUtils","esri/geometry/Geometry","dojo/request/xhr","esri/graphic",
+	"esri/map", "esri/layers/FeatureLayer","esri/dijit/BasemapGallery","esri/dijit/Search",
+	"dijit/MenuItem",	"dijit/popup",
+	"dojo/domReady!"
+	], 
+	function(dom, on, Button,RadioButton,ComboBox,Memory,
+		domStyle,domRegistry, promiseAll,arrayUtils,Standby,
+		Query, QueryTask,StatisticDefinition,
+		SimpleFillSymbol,SimpleLineSymbol,
+		Color,graphicsUtils,Geometry,xhr,Graphic,
+		Map,FeatureLayer, BasemapGallery, Search,
+		MenuItem,popup
+	){ 
+		//
+		//var standby = new Standby({target: "main-loading"});
+		//document.body.appendChild(standby.domNode);
+		//standby.startup();
+		//standby.show();
+		
+		/****************************************************************
+		* global settings 	
+		***************************************************************/
+		var totalCount = 0;
+		var completedCount = 0;
+		var town = defaultTown;
+		var townValue = defaultTown;
+		var year = defaultYear;//1949;	
+		var validServiceConfig = null;
+		var tiledServiceURL = null;
+		var featEditServiceURL = null;
+		var geocodeServiceURL = null;
+
+		/****************************************************************
+		* setup edit field 	
+		***************************************************************/		
+		var currentOBJECTID = null;
+		var lastOBJECTID = null;		
+		var edit_field = null; 
+		var edit_field_value = null; 
+		var currentFidIndex = -1;	
+		var fidItems = [];
+		
+		
+		/****************************************************************
+		* reset task to one of [BldgColorP,BldgUse,BldgText] 	
+		***************************************************************/	
+		function resetTask(taskEditField){
+			// ??TO BE DETERMINED
+			
+			//currentOBJECTID = null;
+			//lastOBJECTID = null;
+			edit_field = taskEditField; 
+			edit_field_value = null;
+			//currentFidIndex = -1;
+			//fidItems = [];
+			
+			if (taskEditField=="BldgColorP"){
+				domStyle.set(dojo.byId("colorDiv"),'display','block');
+				domStyle.set(dojo.byId("useDiv"),'display','none');
+				domStyle.set(dojo.byId("textDiv"),'display','none');
+			} else if (taskEditField=="BldgUse"){			
+				domStyle.set(dojo.byId("colorDiv"),'display','none');
+				domStyle.set(dojo.byId("useDiv"),'display','block');
+				domStyle.set(dojo.byId("textDiv"),'display','none');
+			} else if (taskEditField=="BldgText"){
+				domStyle.set(dojo.byId("colorDiv"),'display','none');
+				domStyle.set(dojo.byId("useDiv"),'display','none');
+				domStyle.set(dojo.byId("textDiv"),'display','block');				
+			} else {
+				//should never happen
+			}
+			
+		}
+		
+		// set defaut task
+		resetTask("BldgColorP");
+		
+		/****************************************************************
+		* default town and year will be selected randomly	
+		***************************************************************/			
+		var removedCnt = 0;
+		var tyIndex = Math.floor((Math.random() * kht.Sevices.length)+1);
+		while (true){			
+			if (kht.Sevices.length<1) break;		
+			if (kht.Sevices[tyIndex] && 
+					kht.Sevices[tyIndex].name && 
+					kht.Sevices[tyIndex].year && 
+					kht.Sevices[tyIndex].featservice && 
+					kht.Sevices[tyIndex].mapservice){
+				validServiceConfig = kht.Sevices[tyIndex];
+				break;
+			}
+			removedCnt = removedCnt + 1;			
+			kht.Sevices.splice(tyIndex,1);//remove this one(1) at index				
+			tyIndex = Math.floor((Math.random() * kht.Sevices.length) + 1);
+		}	
+
+		/****************************************************************
+		* check if we're done
+		***************************************************************/		
+		if (validServiceConfig){
+			town = validServiceConfig.name;
+			townValue = validServiceConfig.value;
+			year = validServiceConfig.year
+			tiledServiceURL = validServiceConfig.mapservice;
+			featEditServiceURL = validServiceConfig.featservice;
+			geocodeServiceURL  = validServiceConfig.geocoder;
+			//dojo.byId('townSelect').value = town + "_" + year;				
+		} else {
+			alert(khtMsg.errDefaultTownYear);			
+		}
+		//console.log(tiledServiceURL);
+		//console.log(featEditServiceURL);
+		//console.log(geocodeServiceURL); 
+		
+		/****************************************************************
+		* create the main map with satellite basemap loaded by default	
+		***************************************************************/
+		var scale = 500;
+		var level = 20;
+		var map = new Map("map", {
+			sliderOrientation: "horizontal",
+			sliderPosition: "top-right",
+			sliderStyle: "small",
+			basemap: "satellite", 
+			center: [-88.44391, 47.23951], 
+			zoom: 19
+		});
+		
+		/****************************************************************
+		* Disable double-click zoom event
+		***************************************************************/
+		map.disableDoubleClickZoom();
+		map.disableClickRecenter();
+
+
+		/****************************************************************
+		* set map event listener when map is loaded
+		***************************************************************/
+		map.on("load", function() { 
+			map.on("zoom-end", function (evt) { 
+				if(evt.level>20){  map.setLevel(20);	 } 				
+				dojo.byId("debugInfo").innerHTML = evt.level + "-" + map.getScale();
+			}); 
+			
+			map.on("pan-end", function (evt) {  }); 
+			
+			// click event
+			map.on("click", mapClickHandler);  
+      }); 
+		
+		/****************************************************************
+		* Map click event handler
+		***************************************************************/
+		function mapClickHandler(evt){
+			dojo.byId("debugInfo").innerHTML = evt.button  + "-" + map.getScale();
+			dojo.byId("debugInfo").innerHTML = "(" + evt.screenPoint.x + ", " + evt.screenPoint.y + ") <br> (" + 
+								Math.round(evt.mapPoint.x*1000)/1000 + ", " + Math.round(evt.mapPoint.y*1000)/1000 + ")";
+			if (featureLayer){
+				var query = new Query();				
+				query.outFields = visfields;
+				query.geometry = evt.mapPoint;
+				query.returnGeometry = true;
+				//featureLayer.setDefinitionExpression("1>0");
+				queryTask.execute(query, function(results){
+					//mouse click selected feature					
+					if (results && results.features.length>0){
+						var aFeature = results.features[0];
+						showClickedFeature(aFeature);
+					}					
+				},function(errs){
+					dom.byId("debugInfo").innerHTML = "executeUpdate:" + errs;
+				}); 				
+			}
+			else {
+				alert("The should never happen");
+			}
+		}
+		function showClickedFeature(aFeature){			 
+			var polygon = aFeature.geometry; 					
+			var polygonExtent = polygon.getExtent();
+						
+			var featureAttributes = aFeature.attributes;			
+			if (featureAttributes[edit_field].trim().length >0 ){
+				dojo.byId("debugInfo").innerHTML = featureAttributes[featureLayer.objectIdField] + " has value :" + featureAttributes[edit_field];
+			} else {
+				dojo.byId("debugInfo").innerHTML = "clicked on " + featureAttributes[featureLayer.objectIdField];
+							
+				currentOBJECTID = featureAttributes[featureLayer.objectIdField];
+							
+				// ?? how do we remove it from fiditems array
+				// we reset for now
+				currentFidIndex = -1;
+							
+				// center map
+				var centerPt = polygonExtent.getCenter();
+				map.centerAt(centerPt);	
+					
+				//drawmap
+				map.graphics.clear();
+				map.graphics.add(new Graphic(polygon, selectionSymbol)); 
+				
+				dom.byId("fieldInfo").innerHTML = "<b>polygon (objectid=" + currentOBJECTID + ")?</b>";
+			} 
+		}
+		 
+		/****************************************************************
+		* Add feature layer - setup field, selection style
+		***************************************************************/ 				 
+		var visfields = ["OBJECTID","st_num", "st_num2","street_nam","number_sto","notes_ques", 
+								"Join_ID","Street_n_1","Basement","Id",
+								"BldgColorP", "BldgColorS", "BldgText", "BldgUse",
+								"place_nam","Year", "GlobalID"]; 	
+		var featureLayer = new FeatureLayer(featEditServiceURL,{  id: "editlayer" });
+		
+		var redColor = new Color([255, 0, 0, 1]);
+		var blueColor = new Color([0, 255, 197, 1]);
+		var selectionSymbol = new SimpleFillSymbol(
+				SimpleFillSymbol.STYLE_NULL, 
+				new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, redColor, 3), 
+				blueColor
+			);
+		featureLayer.setSelectionSymbol(selectionSymbol);	
+		map.addLayer(featureLayer);
+	 
+		// featurelayer events
+		featureLayer.on("click", function (evt) { 			
+			var aFeature = evt.graphic;
+			var featureAttributes = aFeature.attributes;
+			//alert(featureAttributes[featureLayer.objectIdField]);
+		}); 		
+		featureLayer.on("load", function (evt) { 
+			getAllFIDs();
+		});
+	 
+	 
+		/****************************************************************
+		* Add titled map layer 
+		***************************************************************/ 
+		var basemap = new esri.layers.ArcGISDynamicMapServiceLayer(tiledServiceURL,{id:"maplayer",opacity:0.6});
+		map.addLayer(basemap);		
+		
+		/****************************************************************
+		* setup query task
+		***************************************************************/ 
+		var queryTask = new QueryTask(featEditServiceURL);
+		
+		/****************************************************************
+		* setup Color selection tools
+		***************************************************************/ 		 
+		function setupColorTools() {		
+			domStyle.set(dojo.byId("oneColorDiv"),'display','block');
+			
+			domStyle.set(dojo.byId("radioGrey"),'display','block');			
+			domStyle.set(dojo.byId("radioYellow"),'display','block');
+			domStyle.set(dojo.byId("radioPink"),'display','block');
+			domStyle.set(dojo.byId("radioBlue"),'display','block');			
+			domStyle.set(dojo.byId("radioGreen"),'display','block');	
+			
+			// radio button settings
+			domStyle.set(dojo.byId("radioGrey"),'background-color', khtColors.Grey.hex);			
+			domStyle.set(dojo.byId("radioYellow"),'background-color',khtColors.Yellow.hex);
+			domStyle.set(dojo.byId("radioPink"),'background-color',khtColors.Pink.hex);
+			domStyle.set(dojo.byId("radioBlue"),'background-color',khtColors.Blue.hex);
+			domStyle.set(dojo.byId("radioGreen"),'background-color',khtColors.Green.hex);			
+			dojo.query('#radioGrey').onclick( function(evt)  { edit_field_value=khtColors.Grey.value;	execute(); });
+			dojo.query('#radioYellow').onclick( function(evt)  { edit_field_value=khtColors.Yellow.value; execute(); });
+			dojo.query('#radioPink').onclick( function(evt)  { edit_field_value=khtColors.Pink.value;	execute(); });
+			dojo.query('#radioBlue').onclick( function(evt)  { edit_field_value=khtColors.Blue.value;	execute(); });			
+			dojo.query('#radioGreen').onclick( function(evt)  { edit_field_value=khtColors.Green.value;	execute(); });
+			
+			// checkbox settings
+			domStyle.set(dojo.byId("chGrey"),'background-color',khtColors.Grey.hex);			
+			domStyle.set(dojo.byId("chYellow"),'background-color',khtColors.Yellow.hex);
+			domStyle.set(dojo.byId("chPink"),'background-color',khtColors.Pink.hex);
+			domStyle.set(dojo.byId("chBlue"),'background-color',khtColors.Blue.hex);
+			domStyle.set(dojo.byId("chGreen"),'background-color',khtColors.Green.hex); 
+			dojo.query('#chGrey').onclick( function(evt)  { toggleCheckBox("checkboxGrey");});				
+			dojo.query('#checkboxGrey').onclick( function(evt)  { toggleCheckBox("checkboxGrey");});			
+			dojo.query('#chYellow').onclick( function(evt)  { toggleCheckBox("checkboxYellow");});				
+			dojo.query('#checkboxYellow').onclick( function(evt)  { toggleCheckBox("checkboxYellow");});			
+			dojo.query('#chPink').onclick( function(evt)  { toggleCheckBox("checkboxPink");});				
+			dojo.query('#checkboxPink').onclick( function(evt)  { toggleCheckBox("checkboxPink");});			
+			dojo.query('#chBlue').onclick( function(evt)  { toggleCheckBox("checkboxBlue");});				
+			dojo.query('#checkboxBlue').onclick( function(evt)  { toggleCheckBox("checkboxBlue");});			
+			dojo.query('#chGreen').onclick( function(evt)  { toggleCheckBox("checkboxGreen");});				
+			dojo.query('#checkboxGreen').onclick( function(evt)  { toggleCheckBox("checkboxGreen");});
+			
+			// skip current feature
+			dojo.query('#skipBtn').onclick( function(evt)  { SelectNextFeature (); });			
+		}	
+		
+		/****************************************************************
+		* toggle color checkbox for multiple color selection
+		***************************************************************/ 	
+		function toggleCheckBox(chId){	
+			//	the maximum # of colors can be selected is two
+			var colorCnt = 0;
+			if (dojo.byId("checkboxGrey").checked) colorCnt += 1;
+			if (dojo.byId("checkboxYellow").checked) colorCnt += 1;
+			if (dojo.byId("checkboxPink").checked) colorCnt += 1;
+			if (dojo.byId("checkboxBlue").checked) colorCnt += 1;				
+			if (dojo.byId("checkboxGreen").checked) colorCnt += 1;			
+			if (colorCnt>=2){
+				if (dojo.byId(chId).checked) 
+					dojo.byId(chId).checked = false;
+				else
+					alert(khtMsg.infoTwoColorAllowed);				
+			} else {				
+				dojo.byId(chId).checked = !dojo.byId(chId).checked;
+			}
+		}
+	
+		/****************************************************************
+		* run query to select a feature 
+		***************************************************************/
+		function execute() {	 
+			if (currentOBJECTID){
+				lastOBJECTID = currentOBJECTID;
+				executeUpdate();
+			} 
+			else {
+				SelectNextFeature(); 
+			}
+		}	
+		
+		/****************************************************************
+		* update current feature with a user's color(s)
+		***************************************************************/
+		function executeUpdate() {	
+			if (edit_field_value){				
+				// maximum-length=20
+				if (edit_field_value.length>20){
+					alert(edit_field_value.length + ":" + edit_field_value + " is too long");
+				}
+			}
+
+			if (featureLayer && lastOBJECTID){
+				var query = new Query();		
+				query.where = featureLayer.objectIdField + " = " + currentOBJECTID ; 
+				query.outFields = visfields;
+				query.returnGeometry = true;
+				//featureLayer.setDefinitionExpression(query.where);
+				queryTask.execute(query, applyEditsUpdateFeature,function(errs){
+					dom.byId("debugInfo").innerHTML = "executeUpdate:" + errs;
+				}); 				
+			}
+			else {
+				alert("The should never happen");
+			} 
+		}
+		
+		/****************************************************************
+		* apply Edits - reset to single color selection tools
+		***************************************************************/
+		function applyEditsUpdateFeature (updateFeatures) {
+			if (updateFeatures){			
+				var updatedFeature = updateFeatures.features[0];  
+				if (edit_field_value){
+					// check if others have put a value in it?
+					
+					// only two colors can be selected?????
+					var values = edit_field_value.split(",");
+					if (values.length ==2 ){
+						updatedFeature.attributes[edit_field] = values[0];
+						updatedFeature.attributes["BldgColorS"] = values[1];
+					} else {
+						updatedFeature.attributes[edit_field] = edit_field_value;
+					}
+					
+					if (updatedFeature  && featureLayer){			
+						//applyEdits(adds?, updates?, deletes?,callback?, errback?). 
+						featureLayer.applyEdits(null,[updatedFeature],null,
+							function(addResults,updateResults,deleteResults) {		
+								if (updateResults)  {						
+									var featEditResult = updateResults[0];
+									if (featEditResult){
+										if (featEditResult["success"]){
+											dojo.byId("updatedfieldInfo").innerHTML = "(objectid=" + lastOBJECTID + ") " + edit_field + "=" + edit_field_value;
+											
+											// completed one more in this session
+											//completedCount = completedCount + 1;
+											
+											// completion percentage
+											//dom.byId("percentInfo").innerHTML = percentage();
+											refreshCompletionPercentage_Promises();
+										} else {
+											dojo.byId("updatedfieldInfo").innerHTML = "applyEdits: (objectid=" + lastOBJECTID + ") with " + featEditResult["error"];
+										}						
+									}						 
+								} 					
+							}, function(err){
+								dojo.byId("debugInfo").innerHTML = "applyEditsUpdateFeature:" + err;
+							}
+						);	
+						
+						//	reset checkbox status
+						if (dojo.byId("checkboxYellow").checked) dojo.byId("checkboxYellow").checked=false;
+						if (dojo.byId("checkboxPink").checked)  dojo.byId("checkboxPink").checked=false;
+						if (dojo.byId("checkboxBlue").checked)  dojo.byId("checkboxBlue").checked=false;
+						if (dojo.byId("checkboxGrey").checked)  dojo.byId("checkboxGrey").checked=false;
+						if (dojo.byId("checkboxGreen").checked)  dojo.byId("checkboxGreen").checked=false;	
+
+						// select next feature
+						SelectNextFeature (); 
+					} 
+				}	 		
+			} 
+		} 
+		
+		/****************************************************************
+		* randomly choose next feature
+		***************************************************************/
+		function SelectNextFeature () {
+			if (fidItems.length < 1) return;
+			
+			// remove the item at the current index
+			if (currentFidIndex >= 0)
+				fidItems.splice(currentFidIndex, 1);
+			
+			// randomly choose one from the id array
+			currentFidIndex = Math.floor((Math.random() * fidItems.length) + 1); 		
+			currentOBJECTID = fidItems[currentFidIndex];	
+			
+			var query = new Query();		
+			query.where = featureLayer.objectIdField + " = " + currentOBJECTID; 
+			console.log(query.where);
+			
+			query.outFields = visfields;
+			query.returnGeometry = true;
+			
+			if (featureLayer){
+				//featureLayer.setDefinitionExpression(featureLayer.objectIdField + " = " + currentOBJECTID);
+			}
+			else {
+				dom.byId("debugInfo").innerHTML = "featureLayer should never be null";
+			}
+						
+			queryTask.execute(query, function(results){
+				if (results){			
+					var aFeature = results.features[0];
+					var polygon = aFeature.geometry; 
+					
+					//?? What do we do if the feature already has a value					 	
+					//if (aFeature.attributes[edit_field]){
+					//	alert(aFeature.attributes[edit_field]);
+					//} 
+					
+					var polygonExtent = polygon.getExtent();
+					//map.setExtent(polygonExtent, true);
+					var centerPt = polygonExtent.getCenter();
+					map.centerAt(centerPt);					
+					
+					//draw					
+					map.graphics.clear();
+					map.graphics.add(new Graphic(polygon, selectionSymbol));
+					
+					dom.byId("fieldInfo").innerHTML = "<b>polygon (objectid=" + currentOBJECTID + ")?</b>";	
+					
+					//standby.hide();
+				}
+			},function(errs){
+				dom.byId("debugInfo").innerHTML = "SelectNextFeature:" + errs;
+			});  
+		}	
+		
+		/****************************************************************
+		* get objectids from the feature layer that edit_field is empty
+		***************************************************************/		
+		function getAllFIDs(){
+			queryTask.url = featEditServiceURL;
+			var query = new Query(); 
+			// We'll fill out bldgColorP,bldgColorS
+			// bldgColorP will be filled first, 
+			// bldgColorS will be filled if the second color is selected
+			query.where = "place_nam='" + townValue + 
+								"' and year=" +  year + 
+								" and (bldgColorP ='')"; 
+			console.log(featEditServiceURL + "," + queryTask.url + ":" + query.where);
+			
+			query.outFields = [featureLayer.objectIdField];
+			query.returnGeometry = false;
+			queryTask.execute(query, 
+				function(results){
+					var resultCount = results.features.length; 
+					for (var i = 0; i < resultCount; i++) {
+						var featureAttributes = results.features[i].attributes;	
+						//console.log(featureLayer.objectIdField);						
+						//console.log(featureAttributes[featureLayer.objectIdField]);						
+						fidItems.push(featureAttributes[featureLayer.objectIdField]); 
+					} 
+					if (resultCount>0){
+						dom.byId("debugInfo").innerHTML = resultCount;						
+						// start edit
+						execute (null);
+						setupColorTools(); 
+					}				
+					else{
+						// what do we do with it 
+						alert("all done");
+					}
+				}, 
+				function(errs){
+					dom.byId("debugInfo").innerHTML = "getAllFIDs:" + errs;
+			});  	
+		}
+		
+		/****************************************************************
+		* reset tools
+		***************************************************************/			
+		function resetButtons(){ 	
+			var saveColorButton = new Button({
+				label: "Save",					
+				onClick: function(){ 
+					var secondColors = "";
+					if (dojo.byId("checkboxGrey").checked) secondColors += "," + khtColors.Grey.value;
+					if (dojo.byId("checkboxYellow").checked) secondColors += "," + khtColors.Yellow.value;
+					if (dojo.byId("checkboxPink").checked) secondColors += "," + khtColors.Pink.value;
+					if (dojo.byId("checkboxBlue").checked) secondColors += "," + khtColors.Blue.value;					
+					if (dojo.byId("checkboxGreen").checked) secondColors += "," + khtColors.Green.value;
+					secondColors = secondColors.replace(/(^,)|(,$)/g, "");					
+					edit_field_value = secondColors;					
+					execute();
+					
+					showColorOptions(1);					
+				}
+			}, "saveColorBtn").startup();
+			dojo.style("saveColorBtn","width","140px");
+			dojo.style("saveColorBtn","color","black");
+			// or
+			//domStyle.set(dojo.byId("saveColorBtn"), "width", "300px"); 
+		
+			domStyle.set(dojo.byId("oneColorBtn"),'display','none');
+			domStyle.set(dojo.byId("twoColorBtn"),'display','block');				
+			domStyle.set(dojo.byId("oneColorDiv"),'display','block');
+			domStyle.set(dojo.byId("twoColorDiv"),'display','none');	
+			
+			dojo.query('#twoColorBtn').onclick( function(evt)  { 
+				//showColorOptions(2);
+				domStyle.set(dojo.byId("oneColorBtn"),'display','block');
+				domStyle.set(dojo.byId("twoColorBtn"),'display','none');				
+				domStyle.set(dojo.byId("oneColorDiv"),'display','none');
+				domStyle.set(dojo.byId("twoColorDiv"),'display','block');				
+			}); 
+	  
+			dojo.query('#oneColorBtn').onclick( function(evt)  { 
+				//showColorOptions(1);
+				domStyle.set(dojo.byId("oneColorBtn"),'display','none');
+				domStyle.set(dojo.byId("twoColorBtn"),'display','block');				
+				domStyle.set(dojo.byId("oneColorDiv"),'display','block');
+				domStyle.set(dojo.byId("twoColorDiv"),'display','none');					
+			}); 
+
+			dojo.query('#townSelect').onchange( function(evt)  { 
+				if (evt.target.value){
+					var town_year = evt.target.value;
+					changeTownYear(town_year); 
+					console.log("option Changed to: " + evt.target.value  );
+				} else {
+					alert("invalid value!");
+				}
+				
+				dojo.stopEvent(evt);
+			}); 
+		}
+		
+		/****************************************************************
+		* a user select a town year		
+		***************************************************************/
+		function changeTownYear(town_year){
+				//var town_year = evt.target.value;
+				var hasConfigTownYear = false;
+				for (var i = 0; i < kht.Sevices.length; i++) {	
+					//console.log(town_year + "," +  kht.Sevices[i].id);				
+					if (town_year == kht.Sevices[i].id){						
+						console.log( town_year + " = " +  kht.Sevices[i].id);
+						
+						//console.log(kht.Sevices[i].name);
+						//console.log(kht.Sevices[i].year);
+						//console.log(kht.Sevices[i].featservice);
+						//console.log(kht.Sevices[i].mapservice);
+						
+						if (kht.Sevices[i].name && kht.Sevices[i].year && 
+								kht.Sevices[i].featservice && kht.Sevices[i].mapservice){
+							hasConfigTownYear = true;
+							
+							console.log(kht.Sevices[i].featservice);
+							validServiceConfig = kht.Sevices[i];
+							//tyIndex = i;
+							
+							// get selected town, year, mapservice, feature service
+							town = validServiceConfig.name;
+							townValue = validServiceConfig.value;
+							year = validServiceConfig.year
+							tiledServiceURL = validServiceConfig.mapservice;
+							featEditServiceURL = validServiceConfig.featservice;
+							geocodeServiceURL  = validServiceConfig.geocoder; 
+							
+							// remove current layers
+							var editlayer = map.getLayer("editlayer");						
+							map.removeLayer(editlayer); 
+							var maplayer = map.getLayer("maplayer");
+							map.removeLayer(maplayer);
+							
+							// new feature layer
+							featureLayer = new FeatureLayer(featEditServiceURL,
+							{  id: "editlayer", outFields:visfields });	
+							featureLayer.setSelectionSymbol(selectionSymbol);							
+							map.addLayer(featureLayer);
+							//map.reorderLayer(featureLayer,1);
+							
+							// new tiled map 
+							var basemap = new esri.layers.ArcGISDynamicMapServiceLayer(tiledServiceURL,{id:"maplayer",opacity:0.6});
+							map.addLayer(basemap);
+		
+							//events	 
+									featureLayer.on("click", function (evt) { 
+										//alert("evt.graphic");
+										var aFeature = evt.graphic;
+										var featureAttributes = aFeature.attributes;
+										//alert(featureAttributes[featureLayer.objectIdField]);
+										showClickedFeature(aFeature);									
+									}); 						
+									featureLayer.on("load", function (evt) { 
+										getAllFIDs();										
+									});
+							
+							// re-create queryTask
+							queryTask = new QueryTask(featEditServiceURL);	
+
+							// initialize 
+							map.graphics.clear();													
+							currentOBJECTID = null;
+							lastOBJECTID = null;							
+							edit_field_value = null; 
+							currentFidIndex = -1;	
+							fidItems = [];
+							
+							// get objectid list
+							//getAllFIDs();
+							
+							// update completion percentage
+							refreshCompletionPercentage_Promises();
+							 
+						} else {
+							// what do we do with it?
+							alert("cannot find your config data!");
+						}
+						break;
+					}
+				} 
+				if (hasConfigTownYear ==false){
+					// what do we do with it?
+					alert("cannot find your config data---!");
+				}
+		}
+		
+		/****************************************************************
+		* completion percentage: refreshCompletionPercentage_Promises
+		***************************************************************/		
+		function refreshCompletionPercentage_Promises(){	
+			var totalQuery, completedQuery, promises;
+			var queryCnt = new Query();							 
+			queryCnt.where = "place_nam='" + townValue +  "' and year=" +  year;
+			totalQuery = queryTask.executeForCount(queryCnt);
+			console.log(queryCnt.where);
+			
+			queryCnt.where = "place_nam='" + townValue +  "' and year=" +  year + " and NOT ( bldgColorP='')"; 
+			completedQuery = queryTask.executeForCount(queryCnt);
+			console.log(queryCnt.where);
+			
+			promises = promiseAll([totalQuery, completedQuery]);
+         promises.then(function(results){
+				// ?make sure both queries finished successfully
+				totalCount  = results[0];
+				completedCount = results[1];
+				dom.byId("percentInfo").innerHTML = percentage();
+			});
+		}		
+		function percentage(){
+			var percent = completedCount/totalCount;
+			var percRnd = Math.round(percent*100)/100;
+			return completedCount + " / " + totalCount  + " [" + percRnd  + "%] completed"; 
+		}
+		/****************************************************************
+		* switch to primary color or multiple color
+		***************************************************************/
+		function showColorOptions(colorCnt){
+			if (colorCnt>1) {
+				domStyle.set(dojo.byId("oneColorBtn"),'display','block');
+				domStyle.set(dojo.byId("twoColorBtn"),'display','none');				
+				domStyle.set(dojo.byId("oneColorDiv"),'display','none');
+				domStyle.set(dojo.byId("twoColorDiv"),'display','block'); 				
+			}
+			else {
+				domStyle.set(dojo.byId("oneColorBtn"),'display','none');
+				domStyle.set(dojo.byId("twoColorBtn"),'display','block');				
+				domStyle.set(dojo.byId("oneColorDiv"),'display','block');
+				domStyle.set(dojo.byId("twoColorDiv"),'display','none');	
+			}
+		}
+		
+		/****************************************************************
+		* bldg use buttons
+		***************************************************************/
+		function setupBldgUseButtons(){
+			// 
+			var ResidentialButton = new Button({
+				label: "House/Residential",
+				onClick: function(){ edit_field_value="Residential";execute();  }
+			}, "Residential").startup();
+			
+			var CommercialButton = new Button({
+				label: "Store/Commercial",
+				onClick: function(){ edit_field_value="Commercial";execute(); }
+			}, "Commercial").startup(); 
+			
+			var IndustrialButton = new Button({
+				label: "Industrial",
+				onClick: function(){ edit_field_value="Industrial";execute(); }
+			}, "Industrial").startup();
+			
+			var Church_SchoolButton = new Button({
+				label: "Church or School",
+				onClick: function(){ edit_field_value="Church or School";execute(); }
+			}, "Church_School").startup();
+			
+			var OtherButton = new Button({
+				label: "Other",
+				onClick: function(){ edit_field_value="Other";execute(); }
+			}, "Other").startup();  
+			
+			var unknownButton = new Button({
+				label: "Unknown",
+				onClick: function(){ edit_field_value="";execute(); }
+			}, "Unknown").startup();
+		}
+		
+		/****************************************************************
+		* we are ready for getting OBJECTIDS
+		***************************************************************/		
+		dojo.ready(function(){ 
+			dojo.byId('townSelect').value = town + "_" + year;		
+			resetButtons(); 
+
+			// moved to featurelayer load event
+			//getAllFIDs();	
+			
+			// update completion percentage
+			refreshCompletionPercentage_Promises();	
+
+			// setup  click event 			
+			dojo.query('#buttonHelp').onclick( function(evt)  { 				
+				domRegistry.byId("dialogHelp").show();
+			});			
+			//dojo.query('#colorTask').onclick( function(evt)  { alert("colorTask"); });
+			//dojo.query('#textTask').onclick( function(evt)  { alert("textTask"); });
+			//dojo.query('#useTask').onclick( function(evt)  { alert("useTask"); });
+			
+			var taskDropDownButton = domRegistry.getEnclosingWidget(dom.byId("taskDropDownButton"));
+			taskDropDownButton.on( "Click", function(evt)  {
+				//alert("colorTask"); 
+			});
+			var taskTipDialog = domRegistry.getEnclosingWidget(dom.byId("taskTooktipDialog"));	
+			taskTipDialog.on("MouseLeave", function(){
+            //alert('a');
+			});
+			//taskTipDialog.on("Click", function(){
+         //   alert('a');
+			//});
+			
+			var tMenu = domRegistry.getEnclosingWidget(dom.byId("taskMenu"));
+			taskTipDialog.on("Show", function(){
+            //alert('show');				
+				//dijit.byId("colorMenuItem")._setSelected(false);
+				//dijit.byId("useMenuItem")._setSelected(false);
+				//dijit.byId("textMenuItem")._setSelected(true);
+				
+				//var bldgcolorMenuItem = domRegistry.getEnclosingWidget(dom.byId("bldgcolorMenuItem"));
+				//bldgcolorMenuItem.set focused : true,
+				//domStyle.set(bldgcolorMenuItem,'focused','true');
+			});
+			taskTipDialog.on("Click", function(){
+            //alert('show');
+				//dijit.byId("textMenuItem")._setSelected(true);
+				//var bldgcolorMenuItem = domRegistry.getEnclosingWidget(dom.byId("bldgcolorMenuItem"));
+				//bldgcolorMenuItem.set focused : true,
+				//domStyle.set(bldgcolorMenuItem,'focused','true');
+			});		
+			if (tMenu){			  
+				tMenu.addChild(new MenuItem({id:"colorMenuItem",
+					 label:"colorTask", onClick: function(){resetTask('BldgColorP');popup.close(taskTipDialog);}
+				}));
+				tMenu.addChild(new MenuItem({id:"useMenuItem",
+					 label:"useTask", onClick: function(){resetTask('BldgUse');popup.close(taskTipDialog);}
+				}));				
+				tMenu.addChild(new MenuItem({id:"textMenuItem",
+					 label:"textTask", onClick: function(){resetTask('BldgText');popup.close(taskTipDialog);}
+				}));					
+				tMenu.startup();	
+ 				
+			} else {
+				alert("nnn");
+			}	
+ 			 
+			var townTipDialog = domRegistry.getEnclosingWidget(dom.byId("townTooktipDialog"));					
+			var pMenu = domRegistry.getEnclosingWidget(dom.byId("townMenu"));			
+			if (pMenu){
+				pMenu.addChild(new MenuItem({
+					 label:"Calumet", onClick: function(){resetTown('Calumet');popup.close(townTipDialog);}
+				}));
+				pMenu.addChild(new MenuItem({
+					 label:"Laurium", onClick: function(){resetTown('Laurium');popup.close(townTipDialog);}
+				}));				
+				pMenu.addChild(new MenuItem({
+					 label:"Lake Linden", onClick: function(){resetTown('Lake Linden');popup.close(townTipDialog);}
+				}));
+				pMenu.addChild(new MenuItem({
+					 label:"Hancock", onClick: function(){resetTown('Hancock');popup.close(townTipDialog);}
+				}));	
+				pMenu.addChild(new MenuItem({
+					 label:"Houghton", onClick: function(){resetTown('Houghton');popup.close(townTipDialog);}
+				}));	
+				pMenu.startup();				
+			} else {
+				alert("should not happen");
+			}
+			
+			var yearTipDialog = domRegistry.getEnclosingWidget(dom.byId("yearTooktipDialog"));	
+			var yMenu = domRegistry.getEnclosingWidget(dom.byId("yearMenu"));	
+			if (yMenu){
+				yMenu.addChild(new MenuItem({
+					 label:"1949", onClick: function(){resetYear('1949');popup.close(yearTipDialog);}
+				}));
+				yMenu.addChild(new MenuItem({
+					 label:"1935", onClick: function(){resetYear('1935');popup.close(yearTipDialog);}
+				}));				
+				yMenu.addChild(new MenuItem({
+					 label:"1928", onClick: function(){resetYear('1928');popup.close(yearTipDialog);}
+				}));
+				yMenu.addChild(new MenuItem({
+					 label:"1917", onClick: function(){resetYear('1917');popup.close(yearTipDialog);}
+				}));				
+				yMenu.addChild(new MenuItem({
+					 label:"1908", onClick: function(){resetYear('1908');popup.close(yearTipDialog);}
+				}));
+				yMenu.addChild(new MenuItem({
+					 label:"1900", onClick: function(){resetYear('1900');popup.close(yearTipDialog);}
+				}));	
+				yMenu.addChild(new MenuItem({
+					 label:"1888", onClick: function(){
+					 resetYear('1888');
+					 //var node = this.getParent().currentTarget;
+					 //alert("menu clicked for node ", node);
+					 //popup.close(yearTipDialog);
+					 }
+				}));	
+				yMenu.startup();				
+			} else {
+				alert("should not happen");
+			}			 
+		});		
+		
+		function resetYear(selYear){
+			alert("to be determined");
+		}
+		function resetTown(selTown){
+			alert("to be determined");
+		}
+		//add the basemap gallery, in this case we'll display maps from ArcGIS.com including bing maps
+      var basemapGallery = new BasemapGallery({
+        showArcGISBasemaps: true,
+        map: map
+      }, "basemapGallery");
+      basemapGallery.startup();
+      
+      basemapGallery.on("error", function(msg) {
+        console.log("basemap gallery error:  ", msg);
+      }); 		
+		
+		var search = new Search({
+            map: map
+         }, "search");
+		search.startup();  	
+	
+		// BldgUseButtons
+		//setupBldgUseButtons();
+	});	
+</script> 
+
+<link rel="stylesheet" type="text/css" href="configs/loading/loading.css" />  
+<style>
+		#main-loading{
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        overflow: hidden;
+      }
+      #main-loading #ie-note{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
+      #main-loading #ie-note {
+        width: 586px;
+        height: 253px;
+        background-image: url('images/notes.png');
+        padding: 0 30px 40px 30px;
+        font-size: 14px;
+        color: #596679;
+      }
+</style>	 
+</head>
+
+<body class="claro"> 
+	<!--<div id="main-loading"> -->
+	<div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="gutters:true, liveSplitters:false" id="mainContainer">
+		<div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top', splitter:false" style="background-color:black;border:none;width:100%;">
+			<table border="0" cellpadding="0" cellspacing="0"  style="border-collapse: collapse;width:100%;table-layout: fixed;color:white;border-collapse: collapse;"><tr>
+			<td style="width:130px;text-align:center;"> 
+				<button id="buttonHelp" data-dojo-type="dijit/form/Button"  type="button" 
+						data-dojo-props="baseClass:'myDynamicButton'"> Help					 
+				</button>
+			</td>
+			<td style="width:160px;text-align:center;text-align:right;">
+				<span style="color:white;">  </span>
+					<div  style="background-color:black;height:40px" > 
+						<select name="townSelect" id="townSelect" style="padding:5px 0;font-size: 16px;">
+						  <option value="Calumet_1949">1949 - Calumet</option>
+						  <option value="Hancock_1949">1949 - Hancock</option>		  		  
+						  <option value="Laurium_1949">1949 - Laurium</option>
+						  <option value="LakeLinden_1935">1935 - Lake Linden</option>
+						  <option value="Houghton_1949">1949 - Houghton</option>
+							<!--
+							<option value="Houghton_1928">1928 - Houghton</option>
+							<option value="Houghton_1917">1917 - Houghton</option>
+							<option value="Houghton_1908">1908 - Houghton</option>
+							<option value="Houghton_1900">1900 - Houghton</option>
+							<option value="Houghton_1888">1888 - Houghton</option>	
+							-->							
+						</select>
+					</div>
+			</td>
+			<td style="width:130px;text-align:center;">		
+				<div data-dojo-type="dijit/form/DropDownButton" data-dojo-props="baseClass:'myDropDownButton'" >
+					<span>Change Town</span>
+					<div data-dojo-type="dijit/TooltipDialog" style="width:120px;" id="townTooltipDialog">
+						<div data-dojo-type="dijit/Menu" style="width:100px;" id="townMenu">
+						</div>
+					</div>
+				</div>
+			</td>
+			<td style="width:130px;text-align:center;">				
+				<div data-dojo-type="dijit/form/DropDownButton" data-dojo-props="baseClass:'myDropDownButton'" >
+					<span>Change Year</span>
+					<div data-dojo-type="dijit/TooltipDialog" style="width:120px;" id="yearTooktipDialog">
+						<div data-dojo-type="dijit/Menu" style="width:100px;" id="yearMenu">							
+						</div>						
+					</div>
+				</div>	
+			</td>
+			<td style="width:130px;text-align:center;">				
+				<div data-dojo-type="dijit/form/DropDownButton" id="taskDropDownButton" data-dojo-props="baseClass:'myDropDownButton'" >
+					<span>Change Task</span>
+					<div data-dojo-type="dijit/TooltipDialog" style="width:120px;" id="taskTooktipDialog">
+						<div data-dojo-type="dijit/DropDownMenu"style="width:100px;" id="taskMenu">
+							<!--<div data-dojo-type="dijit/MenuItem" id="colorTask" >BldgColor</div>
+							<div data-dojo-type="dijit/MenuItem" id="textTask" >BldgText</div>
+							<div data-dojo-type="dijit/MenuItem" id="useTask" >BldgUse</div> -->
+						</div>						
+					</div>
+				</div>	
+			</td>
+			<td style="width:100%;text-align:center;text-align:right;">
+				<span style="color:white;font-size:24px;font-family:'EB Garamond';text-transform: none;margin-right:8px;"> Keweenaw Time Traveler </span>
+			</td>				
+			</tr>	</table>
+		</div>
+		<!-- end of header -->
+ <!-- main mapContainer-->
+ <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center', splitter:false" style="background-color:black;border:none;width:100%;">  	 
+   <div id="map">		
+		<div id="search"></div>		
+		<div style="position:absolute; right:30px; top:70px; z-Index:999;">
+        <div data-dojo-type="dijit/TitlePane" 
+             data-dojo-props="title:'<img src=images/basemapgallary.png width=25>', closable:false, open:false">
+          <div data-dojo-type="dijit/layout/ContentPane" style="width:380px; height:280px; overflow:auto;">
+            <div id="basemapGallery"></div>
+          </div>
+        </div>
+      </div>		
+	</div>
+</div><!-- end mapContainer -->
+</div><!-- end BorderContainer -->	
+
+<div id="dialogHelp" title="Help" data-dojo-type="dijit/Dialog" data-dojo-props="closable:true">
+		bldgcolor module : alpha version:
+		<ul>
+			<li>Tested on Firefox 47.0.1, Chrome 54.0.2840.87,. </li>
+			<li>implementated based on the flowchart discussed 10-15-2016 and notes from Don. </li>
+			<li>please choose year-town instead of town, year individually (this can be changed after discussion) </li>
+			<li>the debuginfo window is for me to debug the app. It will be removed in the final release</li>
+			<li>the search function has not implementated with customized geocoder and it will be implementated later. </li>
+			<li>Please check the database to see if the color value(s) are written to database correctly </li>
+		</ul>
+		what is comming:
+		<ul>
+			<li>bldguse</li>
+			<li>bldgtext</li>			
+			<li>customized geocoder and change map based on whatever found by the geocoder</li>
+			<li>main interface</li>
+			<li>application integration (bring all into one) or Iterative and incremental development</li>
+		</ul>
+</div>	
+	 
+<!-- FloatingPane for user interaction controls-->	 
+<div id="userInputFloatingPane" data-dojo-type="dojox/layout/FloatingPane"
+         data-dojo-props="title:'BldgColor', closable:false, resizable:true, dockable:false"
+         style="visibility: visible;">   
+			
+   <div id="userInteractCtlDiv"> 
+		<div id="percentInfo"> </div>
+		<input  id="skipBtn" style="width:150px;height:30px;" type="button" value="Skip" title="Click on this button if you don't see any color"> 		
+		
+		<!-- building color/material -->
+		<div id="colorDiv">
+			<input  id="twoColorBtn" style="width:150px;height:30px;" type="button" value="More than one color" title="Click on this button if you see more than one color"> 
+			<input  id="oneColorBtn" style="width:150px;height:30px;" type="button" value="One Color" title="Click on this button if you see only one color"> 		
+			 
+			<div id="oneColorDiv"  style="width:90px;">
+				<div id="radioGrey"   class="roundCornerDiv"> </div>
+				<div id="radioYellow" class="roundCornerDiv"> </div>
+				<div id="radioPink"   class="roundCornerDiv"> </div>
+				<div id="radioBlue"   class="roundCornerDiv"> </div>			
+				<div id="radioGreen"  class="roundCornerDiv"> </div>
+			</div>
+			 
+			<div id="twoColorDiv" style="width:90px;">
+				<div class="roundCornerDiv2" id="chGrey" >	<input type="checkbox" id="checkboxGrey"  >  </div> 
+				<div class="roundCornerDiv2" id="chYellow">  <input type="checkbox" id="checkboxYellow" class="chColorInput" > </div> 
+				<div class="roundCornerDiv2" id="chPink" >	<input type="checkbox" id="checkboxPink"  class="chColorInput" >  </div>  
+				<div class="roundCornerDiv2" id="chBlue" >   <input type="checkbox" id="checkboxBlue" class="chColorInput" >  </div>
+				<div class="roundCornerDiv2" id="chGreen">	<input type="checkbox" id="checkboxGreen" class="chColorInput" >  </div> 
+				
+				<input  id="saveColorBtn"  type="button" value="Save">			
+			</div>	
+		</div>
+		
+		<!-- building use -->
+		<div id="useDiv" style="background-color:white;height:200px;">
+			<p style="color:black">BldgUse is coming...</p>
+			<!--
+			<input  id="Residential" type="button" style="visibility:hidden" value="Residential">  
+			<input  id="Commercial" type="button" style="visibility:hidden" value="Commercial">  		 
+			<input  id="Industrial" type="button" style="visibility:hidden" value="Industrial">  
+			<input  id="Church_School" type="button" style="visibility:hidden" value="Church_School"> 
+			<input  id="Other" type="button" style="visibility:hidden" value="Other"> 
+			<input  id="Unknown" type="button" style="visibility:hidden" value="Unknown"> 
+			-->
+		</div>	
+		
+		<!-- building text -->
+		<div id="textDiv" style="background-color:white;height:200px;>
+			<p style="color:black">BldgText is coming...</p>
+		</div>
+	
+   </div> 
+</div>
+<!-- end of user controls floating pane -->
+
+<!-- FloatingPane for debug-->	 
+<div id="debugFloatingPane" data-dojo-type="dojox/layout/FloatingPane"
+         data-dojo-props="title:'DebugInfo', closable:false, resizable:true, dockable:false"
+         style="visibility: visible;"> 
+	<div id="fieldInfo"></div>
+	<div id="updatedfieldInfo"> </div>	
+	<div id="debugInfo"> </div>			
+</div>			
+<!-- end of debug pane -->
+
+	
+</body>
+</html>

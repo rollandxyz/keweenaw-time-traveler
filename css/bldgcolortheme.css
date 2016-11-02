@@ -1,0 +1,60 @@
+      html,
+      body,
+      #map,
+      .map.container {
+         padding: 0;
+         margin: 0;
+         height: 100%;
+         width: 100%;
+      } 
+		
+      #info {
+         top: 40px;
+         color: white;
+         height: auto;
+         font-family: arial;
+         font-weight: bold;
+         left: 9px;
+         margin:5px 5px 5px 0px;  
+         padding: 10px;
+         position: absolute;
+         width: auto;
+         z-index: 40;
+         border: solid 0px #003300;
+         border-radius: 0px;
+         background-color: black;			 
+      } 
+
+		.roundCornerDiv{			
+			border-radius: 25px;
+			border: 0px solid #73AD21;			
+			width:80px;	
+			height:35px;
+			cursor: pointer;	
+			vertical-align: middle;	
+			display: table-cell;		
+		}
+
+		.roundCornerDiv2{			
+			border-radius: 25px;
+			border: 0px solid #73AD21;			
+			width:80px;	
+			height:35px;
+			cursor: pointer;	
+			vertical-align: middle;				
+		}
+      .cchColorInput"{
+		  margin-top:10px;
+		  }		
+		input[type="checkbox"]:focus{
+        outline:0;
+		}
+	  
+	 #search {
+         display: block;
+         position: absolute;
+         z-index: 2;
+         right:200px;
+			top: 30px;
+         
+      }
