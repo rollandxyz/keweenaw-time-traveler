@@ -312,8 +312,11 @@ require([
 				domStyle.set(dojo.byId("textDiv"),'display','block');				
 			} else {
 				//should never happen
+			} 
+			if (queryTask){
+				refreshCompletionPercentage_Promises();
 			}
-			
+						
 		}
 		
 		// set defaut task
@@ -698,6 +701,9 @@ require([
 					dom.byId("fieldInfo").innerHTML = "<b>polygon (objectid=" + currentOBJECTID + ")?</b>";	
 					
 					//standby.hide();
+					
+					// update percentage
+					refreshCompletionPercentage_Promises();
 				}
 			},function(errs){
 				dom.byId("debugInfo").innerHTML = "SelectNextFeature:" + errs;
@@ -715,7 +721,7 @@ require([
 			// bldgColorS will be filled if the second color is selected
 			query.where = "place_nam='" + townValue + 
 								"' and year=" +  year + 
-								" and (bldgColorP ='')"; 
+								" and (" + edit_field + "='')"; 
 			console.log(featEditServiceURL + "," + queryTask.url + ":" + query.where);
 			
 			query.outFields = [featureLayer.objectIdField];
@@ -737,7 +743,7 @@ require([
 					else{
 						// what do we do with it 
 						alert("all done");
-						dom.byId("debugInfo").innerHTML = "Every feature has a value in BldgColorP.";
+						dom.byId("debugInfo").innerHTML = "Every feature has a value in " + edit_field;
 					}
 				}, 
 				function(errs){
@@ -905,7 +911,9 @@ require([
 			totalQuery = queryTask.executeForCount(queryCnt);
 			console.log(queryCnt.where);
 			
-			queryCnt.where = "place_nam='" + townValue +  "' and year=" +  year + " and NOT ( bldgColorP='')"; 
+			queryCnt.where = "place_nam='" + townValue +  
+									"' and year=" +  year + 
+									" and NOT ( " + edit_field + "='')"; 
 			completedQuery = queryTask.executeForCount(queryCnt);
 			console.log(queryCnt.where);
 			
@@ -1124,7 +1132,7 @@ require([
 		search.startup();  	
 	
 		// BldgUseButtons
-		//setupBldgUseButtons();
+		setupBldgUseButtons();
 	});	
 </script> 
 
@@ -1291,7 +1299,7 @@ require([
 		
 		<!-- building use -->
 		<div id="useDiv" style="background-color:white;height:200px;">
-			<p style="color:black">BldgUse is coming...</p>
+			 <p style="color:black">BldgUse is coming...</p>
 			<!--
 			<input  id="Residential" type="button" style="visibility:hidden" value="Residential">  
 			<input  id="Commercial" type="button" style="visibility:hidden" value="Commercial">  		 
@@ -1299,7 +1307,7 @@ require([
 			<input  id="Church_School" type="button" style="visibility:hidden" value="Church_School"> 
 			<input  id="Other" type="button" style="visibility:hidden" value="Other"> 
 			<input  id="Unknown" type="button" style="visibility:hidden" value="Unknown"> 
-			-->
+			 -->
 		</div>	
 		
 		<!-- building text -->
