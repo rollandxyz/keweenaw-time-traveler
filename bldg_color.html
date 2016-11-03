@@ -27,13 +27,13 @@
       } 
 		
       #userInteractCtlDiv {
-         top: 40px;
+         top: 41px;
          color: white;
          height: auto;
          font-family: arial;
          font-weight: bold;
          left: 9px;
-         margin:5px 5px 5px 0px;  
+         margin:0px 0px 0px 0px;  
          padding: 10px;
          position: absolute;
          width: auto;
@@ -58,10 +58,10 @@
 			border: 0px solid #73AD21;			
 			width:80px;	
 			height:35px;
-			cursor: pointer;	
+			cursor: pointer;				
 			vertical-align: middle;				
 		}
-      .cchColorInput"{
+      .chColorInput{
 		  margin-top:10px;
 		  }		
 		input[type="checkbox"]:focus{
@@ -209,17 +209,26 @@
             -webkit-border-radius: 6px;
             position: absolute;
             top: 75px;
-            left: 10px;
+            left: 13px;
             width: 140px;
             height: 350px;
             z-index: 90;
+				background-color: black;
         }
+		  .claro .dojoxFloatingPaneCanvas{
+				background-color: black;
+		  } 
+		   
+		  #userInputFloatingPane .dojoxFloatingPaneContent{
+				background-color: black;
+		  }
+		  
 		  #userInputFloatingPane .dojoxFloatingPaneTitle {
-				background: black; 
+				background:#434140  ; 
 			}
-        .dojoxFloatingPaneContent {
+        #userInputFloatingPane .dojoxFloatingPaneContent {
             font-family: Arial, Helvetica, sans-serif;
-            font-size: 8pt;
+            font-size: 11pt;
             font-weight: bold;
             overflow: auto;
         }
@@ -1247,11 +1256,11 @@ require([
 <div id="dialogHelp" title="Help" data-dojo-type="dijit/Dialog" data-dojo-props="closable:true">
 		bldgcolor module : alpha version:
 		<ul>
-			<li>Tested on Firefox 47.0.1, Chrome 54.0.2840.87,. </li>
-			<li>implementated based on the flowchart discussed 10-15-2016 and notes from Don. </li>
+			<li>Tested on Firefox 47.0.1, Chrome 54.0.2840.87. </li>
+			<li>the implementation is based on the flowchart discussed 10-25-2016 and notes from Don. </li>
 			<li>please choose year-town instead of town, year individually (this can be changed after discussion) </li>
 			<li>the debuginfo window is for me to debug the app. It will be removed in the final release</li>
-			<li>the search function has not implementated with customized geocoder and it will be implementated later. </li>
+			<li>the search function has not being implementated with customized geocoder, but it will be implementated later. </li>
 			<li>Please check the database to see if the color value(s) are written to database correctly </li>
 		</ul>
 		what is comming:
@@ -1269,12 +1278,12 @@ require([
          data-dojo-props="title:'BldgColor', closable:false, resizable:true, dockable:false"
          style="visibility: visible;">   
 			
-   <div id="userInteractCtlDiv"> 
+   <div id="userInteractCtlDiv" > 
 		<div id="percentInfo"> </div>
 		<input  id="skipBtn" style="width:150px;height:30px;" type="button" value="Skip" title="Click on this button if you don't see any color"> 		
 		
 		<!-- building color/material -->
-		<div id="colorDiv">
+		<div id="colorDiv" >
 			<input  id="twoColorBtn" style="width:150px;height:30px;" type="button" value="More than one color" title="Click on this button if you see more than one color"> 
 			<input  id="oneColorBtn" style="width:150px;height:30px;" type="button" value="One Color" title="Click on this button if you see only one color"> 		
 			 
@@ -1287,7 +1296,7 @@ require([
 			</div>
 			 
 			<div id="twoColorDiv" style="width:90px;">
-				<div class="roundCornerDiv2" id="chGrey" >	<input type="checkbox" id="checkboxGrey"  >  </div> 
+				<div class="roundCornerDiv2" id="chGrey" >	<input type="checkbox" id="checkboxGrey" class="chColorInput" >  </div> 
 				<div class="roundCornerDiv2" id="chYellow">  <input type="checkbox" id="checkboxYellow" class="chColorInput" > </div> 
 				<div class="roundCornerDiv2" id="chPink" >	<input type="checkbox" id="checkboxPink"  class="chColorInput" >  </div>  
 				<div class="roundCornerDiv2" id="chBlue" >   <input type="checkbox" id="checkboxBlue" class="chColorInput" >  </div>
@@ -1298,8 +1307,8 @@ require([
 		</div>
 		
 		<!-- building use -->
-		<div id="useDiv" style="background-color:white;height:200px;">
-			 <p style="color:black">BldgUse is coming...</p>
+		<div id="useDiv" style="height:200px;">
+			 <p style="color:white">BldgUse is coming...</p>
 			<!--
 			<input  id="Residential" type="button" style="visibility:hidden" value="Residential">  
 			<input  id="Commercial" type="button" style="visibility:hidden" value="Commercial">  		 
@@ -1311,8 +1320,8 @@ require([
 		</div>	
 		
 		<!-- building text -->
-		<div id="textDiv" style="background-color:white;height:200px;">
-			<p style="color:black">BldgText is coming...</p>
+		<div id="textDiv" style="height:200px;">
+			<p style="color:white">BldgText is coming...</p>
 		</div>
 	
    </div> 
