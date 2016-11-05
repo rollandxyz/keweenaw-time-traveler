@@ -270,6 +270,7 @@ require([
 		//standby.startup();
 		//standby.show();
 		
+		
 		/****************************************************************
 		* global settings 	
 		***************************************************************/
@@ -997,6 +998,9 @@ require([
 		* we are ready for getting OBJECTIDS
 		***************************************************************/		
 		dojo.ready(function(){ 
+		
+			domRegistry.byId("dialogHelp").show();
+		
 			dojo.byId('townSelect').value = town + "_" + year;		
 			resetButtons(); 
 
